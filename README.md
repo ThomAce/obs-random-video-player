@@ -31,7 +31,7 @@ Built a simple HTML page (HTML + CSS + JavaScript) which is compatible with OBS 
 
 ## How to setup
 
-- Download the latest obs-random-video-player.html
+- Download the latest [obs-random-video-player.html](https://github.com/ThomAce/obs-random-video-player/releases/tag/1.0)
 - Copy / save it to a folder where your movie files are placed
 - Execute the following command depends on your system type:
 - 
