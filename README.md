@@ -56,6 +56,8 @@ Built a simple HTML page (HTML + CSS + JavaScript) which is compatible with OBS 
 ![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/4e4f5688-6f02-4fc4-84b5-d242ca2e4b5f) ![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/f2175db9-5f65-46d3-9704-c98e62750485)
 
 
+![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/2febfd28-7ae6-4ff0-94d0-bb4d628b0317)
+![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/83581be8-9017-4caf-ae37-665622750dd8)
 
 
 ## Known issues, limitations:
