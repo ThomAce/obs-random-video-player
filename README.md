@@ -18,7 +18,6 @@ Built a simple HTML page (HTML + CSS + JavaScript) which is compatible with OBS 
 - Easy integration with OBS
 - No executables needs to be downloaded
 - No ads
-- Only MP4 files can be played at the moment
 - Fade between video elements
 - Automatic continuous play in case of a file can not be played
 - All video muted
@@ -27,7 +26,7 @@ Built a simple HTML page (HTML + CSS + JavaScript) which is compatible with OBS 
 
 ## Requirements
 
-- No special requirements needed
+- No special requirements
 
 ## How to setup
 
@@ -38,12 +37,12 @@ Built a simple HTML page (HTML + CSS + JavaScript) which is compatible with OBS 
   Windows:
   - open a command prompt
   - navigate to your video folder
-  - execute command: dir *.mp4 /b > videos.txt
+  - execute command: dir *.mp4 /b > videos.txt (or in case of various files like: dir *.mp4 *.mov *.ogg /b > videos.txt)
 - 
   Linux:
   - open console
   - navigate to your video folder
-  - execute command: ls -a *.mp4 > videos.txt   
+  - execute command: ls -a *.mp4 > videos.txt (or in case of various files like: ls -a *.mp4 *.mov *.ogg > videos.txt)
 - Open OBS
 - Choose your desired scene and add new Browser element (name it as you wanted...) 
 - Select "Local file", then browse the HTML file
@@ -60,10 +59,18 @@ Built a simple HTML page (HTML + CSS + JavaScript) which is compatible with OBS 
 ![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/83581be8-9017-4caf-ae37-665622750dd8)
 
 
-## Known issues, limitations:
+## Known issues, limitations
 
 - Certain cases some videos might stutter (some frame drops) during fading between two videos. - Check your video driver and capabilities of your system and video files. Recompressing the videos for matching the stream requirements helps a lot.
-- Only MP4 can be played
 - Only FADE transition is available at the moment
 - Only random play order is available at the moment
 - If you open the HTML with your browser, it might not work. Take it easy: In OBS it will work. :)
+
+
+## License
+
+GNU General Public License v3
+
+## Donate
+
+If you like the project, please donate. [PayPal](https://www.paypal.com/donate/?hosted_button_id=YFEZ8JZ5N4WGY)
