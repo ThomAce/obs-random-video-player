@@ -53,7 +53,8 @@ Built a simple HTML page (HTML + CSS + JavaScript) which is compatible with OBS 
 - Click OK and you are done!
 
   
-![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/4e4f5688-6f02-4fc4-84b5-d242ca2e4b5f) ![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/d93191e4-81af-485a-a32e-0303562b03fd)
+![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/4e4f5688-6f02-4fc4-84b5-d242ca2e4b5f) ![kép](https://github.com/ThomAce/obs-random-video-player/assets/34764511/f2175db9-5f65-46d3-9704-c98e62750485)
+
 
 
 
