@@ -1,10 +1,9 @@
 <!-- 
 obs-random-video-player
 https://github.com/ThomAce/obs-random-video-player
-Version: 1.0.0.0
+Version: 1.1.0.0
 Last update: 2023.12.21
 //-->
-
 <html>
 <head>
     <style>
@@ -39,7 +38,7 @@ Last update: 2023.12.21
  </head>
  <body onload="Player.start()" onunload="Player.stop()">
 	<div style="visiblility: hidden;">
-		<iframe id="list" src="videos.txt" width="0" height="0" style="border: 0; margin: 0; padding: 0;" frameborder="no"></iframe>
+		<iframe id="list" src="videos.txt" width="0" height="0" style="border: 0; margin: 0; padding: 0;" frameborder="no" crossorigin="anonymous" referrerpolicy="origin-when-cross-origin"></iframe>
 	</div>
 	
 	<div id="videoDivA" style="z-index: 1;" class="videobox">
@@ -93,8 +92,40 @@ Last update: 2023.12.21
 			return this.list[Math.floor(Math.random() * (this.list.length-1))];
 		}
 		
+		get_type(url){
+			var ext = url.split('.').pop().toLowerCase();
+			
+			switch(ext){
+				case 'mpg':
+				case 'mpeg':
+					return "video/mpeg";
+				break;
+				
+				case 'ogg':
+				case 'ogv':
+					return "video/ogg";
+				break;
+				
+				case '3gp':
+					return "video/3gpp";
+				break;
+				
+				case 'mov':
+					return "video/quicktime";
+				break;
+				
+				case 'webm':
+					return "video/webm";
+				break;
+				
+				default:
+					return "video/mp4";
+			}
+		}
+		
 		load_next(player) {
 			player.src = this.get_random_element();
+			player.type = this.get_type(player.src);
 			player.load();
 			player.muted = true;
 
@@ -128,8 +159,10 @@ Last update: 2023.12.21
 			document.getElementById('list').contentWindow.crossorigin = "anonymous";
 			this.list = document.getElementById('list').contentWindow.document.body.innerText.trim().split('\n');
 			
-			document.getElementById('videoSource1').setAttribute('src', this.get_random_element());
+			document.getElementById('videoSource1').setAttribute('src', this.get_random_element());			
+			document.getElementById('videoSource1').setAttribute('type', this.get_type(document.getElementById('videoSource1').src));
 			document.getElementById('videoSource2').setAttribute('src', this.get_random_element());
+			document.getElementById('videoSource2').setAttribute('type', this.get_type(document.getElementById('videoSource2').src));
 						
 			this.setActivePlayer(this.player_a);		
 			this.start_active();
