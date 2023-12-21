@@ -1,0 +1,222 @@
+<!-- 
+obs-random-video-player
+https://github.com/ThomAce/obs-random-video-player
+Version: 1.0.0.0
+Last update: 2023.12.21
+//-->
+
+<html>
+<head>
+    <style>
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.videobox {
+			opacity: 1;
+			position:fixed;
+			left:0;
+			top:0;
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+		.player {
+			width: 1920px;
+			height: 1080px;
+			padding: 0;
+			margin: 0;
+			border: 0;
+			opacity: 1;
+		}
+    </style>
+ </head>
+ <body onload="Player.start()" onunload="Player.stop()">
+	<div style="visiblility: hidden;">
+		<iframe id="list" src="videos.txt" width="0" height="0" style="border: 0; margin: 0; padding: 0;" frameborder="no"></iframe>
+	</div>
+	
+	<div id="videoDivA" style="z-index: 1;" class="videobox">
+		<video id="videoPlayer1" class="player">
+			<source id="videoSource1" class="video" src="" type="video/mp4" />
+		</video>
+	</div>
+	
+	<div id="videoDivB" style="z-index: 0;" class="videobox">
+		<video id="videoPlayer2" class="player">
+			<source id="videoSource2" class="video" src="" type="video/mp4" />
+		</video>
+	</div>
+</body>
+<script crossorigin="anonymous">
+	class VideoPlayer {
+		active = false;
+		timer = 0;
+		in_fade = false;
+		opacity = 1;
+		list = [];
+		actual_time = 0;
+		
+		constructor() {			
+			this.player_a = document.getElementById("videoPlayer1");
+			this.player_a.crossorigin = "anonymous";
+			this.div_a = document.getElementById("videoDivA");
+			this.player_b = document.getElementById("videoPlayer2");
+			this.player_b.crossorigin = "anonymous";
+			this.div_b = document.getElementById("videoDivB");
+		}
+		
+		setActivePlayer(player) {
+			this.active_player = player;
+			return this.active_player;
+		}
+		
+		getActivePlayer() {
+			return this.active_player;
+		}
+
+		getPassivePlayer() {
+			if (this.getActivePlayer() == this.player_a) {
+				return this.player_b;
+			}
+			
+			return this.player_a;
+		}
+
+		get_random_element() {
+			return this.list[Math.floor(Math.random() * (this.list.length-1))];
+		}
+		
+		load_next(player) {
+			player.src = this.get_random_element();
+			player.load();
+			player.muted = true;
+
+			for (let i = 0; i < this.list.length; i++) {
+				if (player.readyState < 1) {
+					player.src = this.get_random_element();
+					player.load();
+					player.muted = true;
+				}
+				else{
+					return;
+				}
+			}
+
+			return;
+		}
+
+		start_active() {
+			this.getActivePlayer().load();
+			this.getActivePlayer().play();
+		}
+		
+		start_passive() {
+			this.getPassivePlayer().load();
+			this.getPassivePlayer().play();
+		}
+
+		start() {
+			this.active = true;
+			document.getElementById('list').crossorigin = "anonymous";
+			document.getElementById('list').contentWindow.crossorigin = "anonymous";
+			this.list = document.getElementById('list').contentWindow.document.body.innerText.trim().split('\n');
+			
+			document.getElementById('videoSource1').setAttribute('src', this.get_random_element());
+			document.getElementById('videoSource2').setAttribute('src', this.get_random_element());
+						
+			this.setActivePlayer(this.player_a);		
+			this.start_active();
+			
+			this.interval = setInterval( (function() {
+				if (this.getActivePlayer().currentTime < 1) { //fade if a video is not playable or stuck
+					this.fade(); //simply immediately start a new video and fade. 
+					return;
+				}
+				
+				if (this.getActivePlayer().currentTime == this.actual_time) {
+					this.fade(); //simply immediately start a new video and fade. 
+					return;
+				}
+				else {
+					this.actual_time = this.getActivePlayer().currentTime;
+				}
+
+				if (Math.floor(this.getActivePlayer().duration - this.getActivePlayer().currentTime) <= 3) {
+					if (! this.in_fade) {
+						this.fade();
+					}
+				}
+			}).bind(this), 1000);
+		}
+		
+		fade() {
+			if (this.in_fade) { return; }
+			
+			this.in_fade = true;
+			this.start_passive();
+			this.actual_time = this.getActivePlayer().currentTime
+			
+			if (this.opacity == 0) {
+				this.opacity = 0.025;
+			}
+			
+			this.fader = setInterval( (function() {					
+				//fade A => B
+				if (this.getActivePlayer() == this.player_a) {
+					this.player_a.style.opactity = this.opacity;
+					this.div_a.style.opacity = this.opacity;
+					this.opacity -= this.opacity * 0.025;
+					
+					if (this.opacity < 0.05) {
+						this.opacity = 0;
+						this.player_a.style.opactity = 0;
+						this.div_a.style.opacity = 0;
+						
+						clearInterval(this.fader);
+
+						this.setActivePlayer(this.player_b);
+						this.in_fade = false;
+						
+						this.load_next(this.player_a);						
+					}
+				}
+				//fade A <= B
+				else{
+					this.player_a.style.opactity = this.opacity;
+					this.div_a.style.opacity = this.opacity;
+					this.opacity += this.opacity * 0.025;
+					
+					if (this.opacity > 0.95) {
+						this.opacity = 1;
+						this.player_a.style.opactity = this.opacity;
+						this.div_a.style.opacity = this.opacity;
+						
+						clearInterval(this.fader);
+
+						this.setActivePlayer(this.player_a);
+						this.in_fade = false;
+						
+						this.load_next(this.player_b);
+					}
+				}
+			}).bind(this), 25);
+		}
+		
+		stop() {
+			this.player_a.stop();
+			this.player_b.stop();
+
+			clearInterval(this.interval);
+		}
+	}
+
+	const Player = new VideoPlayer();	
+</script>
+</html>
